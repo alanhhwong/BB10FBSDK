@@ -3,42 +3,55 @@ BASEDIR =  $$quote($$_PRO_FILE_PWD_)
 
 device {
     CONFIG(debug, debug|release) {
-        SOURCES +=  $$quote($$BASEDIR/src/BB10FBManager.cpp) \
-                 $$quote($$BASEDIR/src/User.cpp) \
+        SOURCES +=  $$quote($$BASEDIR/src/BB10FBContext.cpp) \
+                 $$quote($$BASEDIR/src/PublishService.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
-                 $$quote($$BASEDIR/src/main.cpp)
+                 $$quote($$BASEDIR/src/main.cpp) \
+                 $$quote($$BASEDIR/src/model/Post.cpp) \
+                 $$quote($$BASEDIR/src/model/User.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/BB10FBManager.h) \
-                 $$quote($$BASEDIR/src/User.h) \
-                 $$quote($$BASEDIR/src/applicationui.hpp)
+        HEADERS +=  $$quote($$BASEDIR/src/BB10FBContext.h) \
+                 $$quote($$BASEDIR/src/PublishService.h) \
+                 $$quote($$BASEDIR/src/applicationui.hpp) \
+                 $$quote($$BASEDIR/src/model/Post.h) \
+                 $$quote($$BASEDIR/src/model/User.h)
     }
 
     CONFIG(release, debug|release) {
-        SOURCES +=  $$quote($$BASEDIR/src/BB10FBManager.cpp) \
-                 $$quote($$BASEDIR/src/User.cpp) \
+        SOURCES +=  $$quote($$BASEDIR/src/BB10FBContext.cpp) \
+                 $$quote($$BASEDIR/src/PublishService.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
-                 $$quote($$BASEDIR/src/main.cpp)
+                 $$quote($$BASEDIR/src/main.cpp) \
+                 $$quote($$BASEDIR/src/model/Post.cpp) \
+                 $$quote($$BASEDIR/src/model/User.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/BB10FBManager.h) \
-                 $$quote($$BASEDIR/src/User.h) \
-                 $$quote($$BASEDIR/src/applicationui.hpp)
+        HEADERS +=  $$quote($$BASEDIR/src/BB10FBContext.h) \
+                 $$quote($$BASEDIR/src/PublishService.h) \
+                 $$quote($$BASEDIR/src/applicationui.hpp) \
+                 $$quote($$BASEDIR/src/model/Post.h) \
+                 $$quote($$BASEDIR/src/model/User.h)
     }
 }
 
 simulator {
     CONFIG(debug, debug|release) {
-        SOURCES +=  $$quote($$BASEDIR/src/BB10FBManager.cpp) \
-                 $$quote($$BASEDIR/src/User.cpp) \
+        SOURCES +=  $$quote($$BASEDIR/src/BB10FBContext.cpp) \
+                 $$quote($$BASEDIR/src/PublishService.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
-                 $$quote($$BASEDIR/src/main.cpp)
+                 $$quote($$BASEDIR/src/main.cpp) \
+                 $$quote($$BASEDIR/src/model/Post.cpp) \
+                 $$quote($$BASEDIR/src/model/User.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/BB10FBManager.h) \
-                 $$quote($$BASEDIR/src/User.h) \
-                 $$quote($$BASEDIR/src/applicationui.hpp)
+        HEADERS +=  $$quote($$BASEDIR/src/BB10FBContext.h) \
+                 $$quote($$BASEDIR/src/PublishService.h) \
+                 $$quote($$BASEDIR/src/applicationui.hpp) \
+                 $$quote($$BASEDIR/src/model/Post.h) \
+                 $$quote($$BASEDIR/src/model/User.h)
     }
 }
 
-INCLUDEPATH +=  $$quote($$BASEDIR/src)
+INCLUDEPATH +=  $$quote($$BASEDIR/src/model) \
+         $$quote($$BASEDIR/src)
 
 CONFIG += precompile_header
 

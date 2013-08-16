@@ -22,7 +22,7 @@ static const uint qt_meta_data_ApplicationUI[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -34,12 +34,16 @@ static const uint qt_meta_data_ApplicationUI[] = {
       54,   41,   14,   14, 0x0a,
       92,   85,   14,   14, 0x0a,
      132,  120,   14,   14, 0x0a,
+     172,  167,   14,   14, 0x0a,
 
  // methods: signature, parameters, type, tag, flags
-     167,   14,   14,   14, 0x02,
-     175,   14,   14,   14, 0x02,
-     184,   14,   14,   14, 0x02,
-     201,   14,   14,   14, 0x02,
+     199,   14,   14,   14, 0x02,
+     211,   14,   14,   14, 0x02,
+     219,   14,   14,   14, 0x02,
+     228,   14,   14,   14, 0x02,
+     245,   14,   14,   14, 0x02,
+     262,   14,   14,   14, 0x02,
+     276,   14,   14,   14, 0x02,
 
        0        // eod
 };
@@ -49,8 +53,10 @@ static const char qt_meta_stringdata_ApplicationUI[] = {
     "access_token\0onAccessTokenReceived(QString)\0"
     "myself\0onUserProfileReceived(User)\0"
     "friendsList\0onUserFriendsReceived(QList<User>)\0"
-    "logIn()\0logOut()\0getUserProfile()\0"
-    "getUserFriends()\0"
+    "post\0onPublishPostSuccess(Post)\0"
+    "clearLogs()\0logIn()\0logOut()\0"
+    "getUserProfile()\0getUserFriends()\0"
+    "publishPost()\0publishPostWithImageUrl()\0"
 };
 
 void ApplicationUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -63,10 +69,14 @@ void ApplicationUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 1: _t->onAccessTokenReceived((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 2: _t->onUserProfileReceived((*reinterpret_cast< User(*)>(_a[1]))); break;
         case 3: _t->onUserFriendsReceived((*reinterpret_cast< QList<User>(*)>(_a[1]))); break;
-        case 4: _t->logIn(); break;
-        case 5: _t->logOut(); break;
-        case 6: _t->getUserProfile(); break;
-        case 7: _t->getUserFriends(); break;
+        case 4: _t->onPublishPostSuccess((*reinterpret_cast< Post(*)>(_a[1]))); break;
+        case 5: _t->clearLogs(); break;
+        case 6: _t->logIn(); break;
+        case 7: _t->logOut(); break;
+        case 8: _t->getUserProfile(); break;
+        case 9: _t->getUserFriends(); break;
+        case 10: _t->publishPost(); break;
+        case 11: _t->publishPostWithImageUrl(); break;
         default: ;
         }
     }
@@ -104,9 +114,9 @@ int ApplicationUI::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 12;
     }
     return _id;
 }

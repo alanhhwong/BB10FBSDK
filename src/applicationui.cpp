@@ -28,19 +28,25 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
     // Create root object for the UI
     AbstractPane *root = qml->createRootObject<AbstractPane>();
+    logLabel = root->findChild<Label*>("log");
 
     // Set created root object as the application scene
     app->setScene(root);
 
-    fbmanager = BB10FBManager::instance();
-    fbmanager->setAppID("287287514746804");
-    connect(fbmanager, SIGNAL(accessTokenReceived(QString)), this, SLOT(onAccessTokenReceived(QString)));
-    connect(fbmanager, SIGNAL(userProfileReceived(User)), this, SLOT(onUserProfileReceived(User)));
-    connect(fbmanager, SIGNAL(userFriendsReceived(QList<User>)), this, SLOT(onUserFriendsReceived(QList<User>)));
+    fbcontext = new BB10FBContext("287287514746804");
+    publishService = new PublishService(fbcontext);
+    _myself = NULL;
+
+    connect(fbcontext, SIGNAL(accessTokenReceived(QString)), this, SLOT(onAccessTokenReceived(QString)));
+    connect(fbcontext, SIGNAL(userProfileReceived(User)), this, SLOT(onUserProfileReceived(User)));
+    connect(fbcontext, SIGNAL(userFriendsReceived(QList<User>)), this, SLOT(onUserFriendsReceived(QList<User>)));
+
+    connect(publishService, SIGNAL(publishPostSuccess(Post)), this, SLOT(onPublishPostSuccess(Post)));
 }
 
 ApplicationUI::~ApplicationUI() {
-	delete fbmanager;
+	delete publishService;
+	delete _myself;
 }
 
 void ApplicationUI::onSystemLanguageChanged()
@@ -54,35 +60,40 @@ void ApplicationUI::onSystemLanguageChanged()
     }
 }
 
+void ApplicationUI::clearLogs() {
+	logLabel->resetText();
+}
+
 void ApplicationUI::onAccessTokenReceived(QString access_token) {
-	qDebug() << "\nAccess Token received in app: " << access_token;
+	logMessage("Access Token received in app: " + access_token);
 }
 
 void ApplicationUI::logIn() {
-	fbmanager->signIn();
+	fbcontext->signIn();
 }
 
 void ApplicationUI::logOut() {
-	fbmanager->signOut();
+	fbcontext->signOut();
 }
 
 void ApplicationUI::getUserProfile() {
-	fbmanager->getUserProfile();
+	fbcontext->getUserProfile();
 }
 
 void ApplicationUI::getUserFriends() {
-	fbmanager->getUserFriends();
+	fbcontext->getUserFriends();
 }
 
-void ApplicationUI::onUserProfileReceived(User myself) {
-	QString result = "ID: " + myself.getId() +
-					 "\nName: " + myself.getName() +
-					 "\nFirst Name: " + myself.getFirstName() +
-					 "\nLast Name: " + myself.getLastName() +
-					 "\nLink: " + myself.getLink() +
-					 "\nUser Name: " + myself.getUsername();
+void ApplicationUI::onUserProfileReceived(User user) {
+	_myself = new User(user);
+	QString result = "ID: " + user.getId() +
+					 "\nName: " + user.getName() +
+					 "\nFirst Name: " + user.getFirstName() +
+					 "\nLast Name: " + user.getLastName() +
+					 "\nLink: " + user.getLink() +
+					 "\nUser Name: " + user.getUsername();
 
-	qDebug() << "\n" << result;
+	logMessage(result);
 }
 
 void ApplicationUI::onUserFriendsReceived(QList<User> friendsList) {
@@ -93,6 +104,44 @@ void ApplicationUI::onUserFriendsReceived(QList<User> friendsList) {
 		output += "Name: " + i->getName() + ", Username: "+i->getUsername() + "\n";
 	}
 
-	qDebug() << "Count: " << friendsList.count();
-	qDebug() << "Friends:\n" << output;
+	logMessage("Count: " + friendsList.count());
+	logMessage("Friends:\n" + output);
+}
+
+void ApplicationUI::publishPost() {
+	if (_myself && publishService) {
+		User toUser;
+		toUser.setId(_myself->getId());
+		Post post;
+		post.setMessage("Test Message from BB10SDK");
+		logMessage("Publishing Post:\nid: " + _myself->getId() + "\nmsg: Test Message from BB10SDK");
+		publishService->publishPost(toUser, post);
+	}
+	else {
+		logMessage("My profile not set");
+	}
+}
+
+void ApplicationUI::publishPostWithImageUrl() {
+	if (_myself && publishService) {
+		User toUser;
+		toUser.setId(_myself->getId());
+		Post post;
+		post.setMessage("Test Message with Image from BB10SDK");
+		post.setPicture("http://www.berrybk.com/wp-content/uploads/2013/02/blackberry-10-300113.jpg");
+		logMessage("Publishing Post:\nid: " + _myself->getId() + "\nmsg: Test Message With Image Url from BB10SDK\npic:url: " + "http://www.berrybk.com/wp-content/uploads/2013/02/blackberry-10-300113.jpg");
+		publishService->publishPost(toUser, post);
+	}
+	else {
+		logMessage("My profile not set");
+	}
+}
+
+void ApplicationUI::onPublishPostSuccess(Post post) {
+	logMessage("Test Post (id: " + post.getId() + ") Published!");
+}
+
+void ApplicationUI::logMessage(QString message) {
+	qDebug() << "[applicationui.cpp]: " << message;
+	logLabel->setText(logLabel->text() + "\n" + message + "\n");
 }
